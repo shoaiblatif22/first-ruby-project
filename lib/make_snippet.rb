@@ -7,6 +7,6 @@ def make_snippet(str)
   if words.length <= 5
     return str
   else 
-    first_five_words = words[0, 5].join(" ")
+    first_five_words = words[0, 5].join(" ") + "..."
   end
 end
