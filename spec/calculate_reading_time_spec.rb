@@ -42,5 +42,12 @@ RSpec.describe "calculate_reading_time" do
       expect(result).to eq 25
     end
   end
+
+  context "given a text of 10000 words" do
+    it "returns one" do
+      result = calculate_reading_time ("one " * 10000)
+      expect(result).to eq 50
+    end
+  end
 end
 #need to push files again please ignore#
