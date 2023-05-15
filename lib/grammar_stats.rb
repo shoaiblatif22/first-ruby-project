@@ -10,6 +10,7 @@ class GrammarStats
     first_letter_is_uppercase = text[0] == text[0].upcase
     last_character_is_valid = [".", "!", "?"].include?(text[-1])
     result = first_letter_is_uppercase && last_character_is_valid
+    #this commit is a test
 
     if result
       @pass_count += 1
