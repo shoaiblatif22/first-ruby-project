@@ -50,7 +50,9 @@ RSpec.describe "GrammarStats" do
       grammar_stats.check("This is an incorrect test sentence")
       grammar_stats.check("This is a correct test sentence.")
       grammar_stats.check("This is a correct test sentence.")
-      expect(grammar_stats.percentage_good).to eq 66.66666666666666
+      grammar_stats.check("This is an incorrect test sentence")
+      grammar_stats.check("This is an incorrect test sentence")
+      expect(grammar_stats.percentage_good).to eq 50.0
     end
   end
 end
