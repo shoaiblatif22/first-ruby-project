@@ -43,6 +43,14 @@ RSpec.describe DiaryEntry do
         expect(chunk).to eq "one two three"
       end
     end
+
+    context "with a contents unreadable within the given time" do 
+      it "returns a readable chunk" do
+        diary_entry = DiaryEntry.new("my_title", "one two three")
+        chunk = diary_entry.reading_chunk(2, 1)
+        expect(chunk).to eq "one two"
+      end
+    end
   end
 end
 
