@@ -16,5 +16,8 @@ class Diary
   end
 
   def reading_time(wpm)
+    return @entries.sum do |entry|
+      entry.reading_time(wpm)
+    end
   end
 end
