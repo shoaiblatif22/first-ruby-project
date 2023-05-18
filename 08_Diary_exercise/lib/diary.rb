@@ -16,8 +16,9 @@ class Diary
   end
 
   def reading_time(wpm)
-    return @entries.sum do |entry|
-      entry.reading_time(wpm)
-    end
+    return (count_words / wpm.to_f).ceil
+  end
+
+  def find_best_entry_for_reading_time(wpm, minutes)
   end
 end

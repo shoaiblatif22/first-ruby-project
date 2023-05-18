@@ -26,7 +26,7 @@ RSpec.describe "integration" do
     #remember the caes where wpm is 0
     it "calculates the reading time for all entries" do
       diary = Diary.new
-        diary_entry_1 = DiaryEntry.new("my title", "my contents")
+        diary_entry_1 = DiaryEntry.new("my title", "my contents 1")
         diary_entry_2 = DiaryEntry.new("my title 2", "my contents 2")
         diary.add(diary_entry_1)
         diary.add(diary_entry_2)
