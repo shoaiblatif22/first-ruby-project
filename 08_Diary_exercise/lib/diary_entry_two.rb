@@ -13,10 +13,12 @@ class DiaryEntry
   end
 
   def count_words
-    @contents.split(" ").length
+    return 0 if @contents.empty?
+    return @contents.count(" ") + 1
   end
 
   def reading_time(wpm)
+    return (count_words / wpm.to_f).ceil
   end
 
   def reading_chunk(wpm, minutes)
