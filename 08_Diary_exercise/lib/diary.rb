@@ -12,6 +12,7 @@ class Diary
   end
 
   def count_words
+    return @entries.sum(&:count_words)
   end
 
   def reading_time(wpm)

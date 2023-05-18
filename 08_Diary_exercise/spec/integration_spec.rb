@@ -13,7 +13,7 @@ RSpec.describe "integration" do
     end
 
     describe "#count_words" do
-     xit "counts the words in all diary entries contents" do
+     it "counts the words in all diary entries contents" do
         diary = Diary.new
         diary_entry_1 = DiaryEntry.new("my title", "my contents")
         diary_entry_2 = DiaryEntry.new("my title 2", "my contents 2")

@@ -1,4 +1,4 @@
-require "diary_entry"
+require "diary_entry_two"
 
 RSpec.describe DiaryEntry do
   it "constructs" do
