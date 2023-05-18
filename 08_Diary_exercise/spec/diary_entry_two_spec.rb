@@ -1,50 +1,66 @@
-require "diary_entry_two"
+require 'diary_entry_two'
 
 RSpec.describe DiaryEntry do
-  it "constructs" do
-    diary_entry = DiaryEntry.new("my_title", "my_contents")
-    expect(diary_entry.title).to eq "my_title"
-    expect(diary_entry.contents).to eq "my_contents"
+  context "when creating a new diary entry" do
+    it "returns a diary entry" do
+      diary_entry = DiaryEntry.new("Monday", "Lorem ipsum.")
+      expect(diary_entry.title).to eq "Monday"
+      expect(diary_entry.contents).to eq "Lorem ipsum."
+    end
   end
 
-  describe "#count_words" do
-    it "returns zero if contents is empty" do
-      diary_entry = DiaryEntry.new("my_title", "")
+  context "when given a diary entry" do
+    it "should return the number of words in the entry" do
+      diary_entry = DiaryEntry.new("Monday", "Lorem ipsum.")
+      expect(diary_entry.count_words).to eq 2
+    end
+    it "should return 0 for an empty entry" do
+      diary_entry = DiaryEntry.new("Monday", "")
       expect(diary_entry.count_words).to eq 0
     end
+  end
 
-    it "returns one if contents is one word" do
-      diary_entry = DiaryEntry.new("my_title", "one")
-      expect(diary_entry.count_words).to eq 1
+  context "when given a reading speed" do
+    it "returns 3 when given wpm of 1 and text of 3" do
+      diary_entry = DiaryEntry.new("Monday", "one two three")
+      expect(diary_entry.reading_time(1)).to eq 3
+    end 
+    it "returns 3 for wpm 2 and text of 5" do
+      diary_entry = DiaryEntry.new("Monday", "one two three foru five")
+      expect(diary_entry.reading_time(2)).to eq 3
     end
-
-    it "counts the words in the contents" do
-      diary_entry = DiaryEntry.new("my_title", "one two three four")
-      expect(diary_entry.count_words).to eq 4
+    it "returns 0 for wpm 2 and text of 0" do
+      diary_entry = DiaryEntry.new("Title", "")
+      expect(diary_entry.reading_time(2)).to eq 0
+    end
+    it "fails unless wpm is positive" do
+      diary_entry = DiaryEntry.new("Title", "one two three")
+      expect{diary_entry.reading_time(-1)}.to raise_error ("Error: wpm should be a non-negative integer")
     end
   end
 
-  describe "#reading_time" do
-    it "fails if the wpm is zero" do
-      diary_entry = DiaryEntry.new("my_title", "hello world")
-      expect { diary_entry.reading_time(0) }.to raise_error "wpm must be positive."
-    end
-    #remember the case where wpm is 0
-    it "returns zero if contents is empty" do
-      diary_entry = DiaryEntry.new("my_title", "")
-      expect(diary_entry.reading_time(2)).to eq 0
+  context "when give a reading speed and number of minutes" do
+    it "returns a chunk for wpm of 1 and minutes of 2" do
+      diary_entry = DiaryEntry.new("Title", "one two three")
+      expect(diary_entry.reading_chunk(1, 2)).to eq "one two"
     end
 
-    it "returns one if contents is one word" do
-      diary_entry = DiaryEntry.new("my_title", "one")
-      expect(diary_entry.reading_time(2)).to eq 1
+    it "returns a chunk that can be read in that time" do
+      diary_entry = DiaryEntry.new("Title", "one two three")
+      diary_entry.reading_chunk(2, 1)
+      diary_entry.reading_chunk(2, 1)
+      expect(diary_entry.reading_chunk(2, 1)).to eq "one two"
     end
 
-    it "returns a reading time for the contents" do
-      diary_entry = DiaryEntry.new("my_title", "one two three four five")
-      expect(diary_entry.reading_time(2)).to eq 3
+    it "fails when given negative wpm" do
+      diary_entry = DiaryEntry.new("Title", "one two three")
+      expect{diary_entry.reading_chunk(-1, 1)}.to raise_error ("Error. Parameter should be above 0!")
+    end
+
+    it "fails when given negative minutes" do
+      diary_entry = DiaryEntry.new("Title", "one two three")
+      expect{diary_entry.reading_chunk(1, -1)}.to raise_error("Error. Parameter should be above 0!")
     end
   end
 end
-
  

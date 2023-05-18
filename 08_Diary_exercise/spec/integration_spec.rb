@@ -1,36 +1,77 @@
-require "diary"
-require "diary_entry_two"
+require 'diary'
+require 'diary_entry_two'
 
 RSpec.describe "integration" do
-    it "lists out the entries added" do
+  context "given two diary entries" do
+    it "returns a list of all diary entries" do
       diary = Diary.new
-      diary_entry_1 = DiaryEntry.new("my title", "my contents")
-      diary_entry_2 = DiaryEntry.new("my title 2", "my contents 2")
-      diary.add(diary_entry_1)
-      diary.add(diary_entry_2)
-      expect(diary.all).to eq [diary_entry_1, diary_entry_2]
-    end
-
-    describe "#word counting behaviour" do
-     it "counts the words in all diary entries contents" do
-        diary = Diary.new
-        diary_entry_1 = DiaryEntry.new("my title", "my contents")
-        diary_entry_2 = DiaryEntry.new("my title 2", "my contents 2")
-        diary.add(diary_entry_1)
-        diary.add(diary_entry_2)
-        expect(diary.count_words).to eq 5
+      entry_1 = DiaryEntry.new("Title_1", "Contents_1")
+      entry_2 = DiaryEntry.new("Title_2", "Contents_2")
+      diary.add(entry_1)
+      diary.add(entry_2)
+      expect(diary.all).to eq [entry_1, entry_2]
     end
   end
 
-  describe "reading time behaviour" do
-    #remember the caes where wpm is 0
-    it "calculates the reading time for all entries" do
+  context "given 3 diary entries" do  
+    it "returns a reading time of 3 when given wpm of " do
       diary = Diary.new
-        diary_entry_1 = DiaryEntry.new("my title", "my contents 1")
-        diary_entry_2 = DiaryEntry.new("my title 2", "my contents 2")
-        diary.add(diary_entry_1)
-        diary.add(diary_entry_2)
-        expect(diary.reading_time(2)).to eq 3
+      entry_1 = DiaryEntry.new("Title_1", "Contents_1")
+      entry_2 = DiaryEntry.new("Title_2", "Contents_2")
+      entry_3 = DiaryEntry.new("Title_3", "one two three")
+      diary.add(entry_1)
+      diary.add(entry_2)
+      diary.add(entry_3)
+      expect(diary.reading_time(2)).to eq 3
+    end
+    
+    it "returns 1" do
+      diary = Diary.new
+      entry_1 = DiaryEntry.new("Title_1", "one two three four five six")
+      entry_2 = DiaryEntry.new("Title_2", "one two")
+      entry_3 = DiaryEntry.new("Title_3", "one two three")
+      diary.add(entry_1)
+      diary.add(entry_2)
+      diary.add(entry_3)
+      expect(diary.reading_time(11)).to eq 1
+    end
+
+    it "fails" do
+      diary = Diary.new
+      entry_1 = DiaryEntry.new("Title_1", "one two three four five six")
+      entry_2 = DiaryEntry.new("Title_2", "one two")
+      entry_3 = DiaryEntry.new("Title_3", "one two three")
+      diary.add(entry_1)
+      diary.add(entry_2)
+      diary.add(entry_3)
+      expect{diary.reading_time(-2)}.to raise_error "Error: wpm should be a non-negative integer" 
+    end
+  end
+
+  context "#find_best_entry_for_reading_time" do
+    it "should return the closest entry which could be read within the time given" do
+      diary = Diary.new
+      entry_1 = DiaryEntry.new("Title_1", "1 2 3 four five six")
+      entry_3 = DiaryEntry.new("Title_3", "one two three")
+      entry_2 = DiaryEntry.new("Title_2", "one 2")
+      diary.add(entry_1)
+      diary.add(entry_2)
+      diary.add(entry_3)
+      expect(diary.find_best_entry_for_reading_time(3, 1)).to eq entry_3
+    end
+
+    it "should return the closest entry which could be read within the time given" do
+      diary = Diary.new
+      entry_1 = DiaryEntry.new("Title_1", "1 2 3 four five six seven eight")
+      entry_3 = DiaryEntry.new("Title_3", "one two three four five")
+      entry_2 = DiaryEntry.new("Title_2", "one two")
+      entry_4 = DiaryEntry.new("Title_4", "one 2")
+      diary.add(entry_1)
+      diary.add(entry_3)
+      diary.add(entry_2)
+      diary.add(entry_4)
+
+      expect(diary.find_best_entry_for_reading_time(1, 5)).to eq entry_3
     end
   end
 end

@@ -1,27 +1,39 @@
 class DiaryEntry
-  def initialize(title,contents)
+  def initialize(title, contents) # title, contents are strings
     @title = title
     @contents = contents
+    @start = 0
   end
 
   def title
-    return @title
+    @title
   end
 
   def contents
-    return @contents
+    @contents
   end
 
   def count_words
-    return 0 if @contents.empty?
-    return @contents.count(" ") + 1
+    @contents.split(" ").length
   end
+
 
   def reading_time(wpm)
-    fail "wpm must be positive." unless wpm.positive?
-    return (count_words / wpm.to_f).ceil
+    fail "Error: wpm should be a non-negative integer" if wpm < 0
+    (count_words / wpm.to_f).ceil
   end
+    
 
-  def reading_chunk(wpm, minutes)
+  def reading_chunk(wpm, minutes) 
+    fail "Error. Parameter should be above 0!" unless wpm.positive? && minutes.positive?
+    finish = wpm * minutes
+    chunk = @contents.split(" ").slice(@start, finish).join(" ")
+    if @start + finish >= count_words
+      @start = 0
+    else
+      @start += finish
+    end
+    return chunk
+    # ...
   end
 end
